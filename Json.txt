@@ -1,0 +1,46 @@
+Servidor B
+	Servidor C
+		meanType:Wifi
+		bandwidth:300
+		traffic:180
+		distance:30
+		usersOnline:6
+	Servidor A
+		meanType:Coaxcial
+		bandwidth:100
+		traffic:60
+		distance:10
+		usersOnline:2
+	Servidor D
+		meanType:Fibra Optica
+		bandwidth:400
+		traffic:240
+		distance:60
+		usersOnline:8
+Servidor D
+Servidor C
+	Servidor A
+		meanType:Coaxcial
+		bandwidth:100
+		traffic:60
+		distance:10
+		usersOnline:2
+	Servidor B
+		meanType:CAT5
+		bandwidth:200
+		traffic:120
+		distance:21
+		usersOnline:4
+Servidor A
+	Servidor C
+		meanType:Wifi
+		bandwidth:300
+		traffic:180
+		distance:30
+		usersOnline:6
+	Servidor B
+		meanType:CAT5
+		bandwidth:200
+		traffic:120
+		distance:21
+		usersOnline:4

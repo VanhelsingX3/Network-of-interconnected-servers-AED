@@ -1,0 +1,46 @@
+Servidor B
+	Servidor D
+		Tipo de medio:8
+		Cantidad de trafico:240
+		Ancho de banda:Fibra Optica
+		Cantidad de usuarios:400
+		Distancia:60
+	Servidor C
+		Tipo de medio:6
+		Cantidad de trafico:180
+		Ancho de banda:Wifi
+		Cantidad de usuarios:300
+		Distancia:30
+	Servidor A
+		Tipo de medio:2
+		Cantidad de trafico:60
+		Ancho de banda:Coaxcial
+		Cantidad de usuarios:100
+		Distancia:10
+Servidor A
+	Servidor C
+		Tipo de medio:6
+		Cantidad de trafico:180
+		Ancho de banda:Wifi
+		Cantidad de usuarios:300
+		Distancia:30
+	Servidor B
+		Tipo de medio:4
+		Cantidad de trafico:120
+		Ancho de banda:CAT5
+		Cantidad de usuarios:200
+		Distancia:21
+Servidor D
+Servidor C
+	Servidor B
+		Tipo de medio:4
+		Cantidad de trafico:120
+		Ancho de banda:CAT5
+		Cantidad de usuarios:200
+		Distancia:21
+	Servidor A
+		Tipo de medio:2
+		Cantidad de trafico:60
+		Ancho de banda:Coaxcial
+		Cantidad de usuarios:100
+		Distancia:10
