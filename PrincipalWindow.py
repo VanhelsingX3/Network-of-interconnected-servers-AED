@@ -130,11 +130,14 @@ class PWindow(QMainWindow):
 		paths = None
 		for k,v in jsonGraph.items():
 			newJson[k]=[]
-			for z in v:
-				print(type(z.valueToEdges))
-				print(z.valueToEdges)
-				newJson[k].append(z.name)
+			for aris,w in v.items():
+				temp = []
+				temp.append(aris)
+				temp.append(w)
+				#newJson[k].append(aris)
+				newJson[k].append(temp)
 
+		print(newJson)
 		origin = self.boxOfOrigin.text()
 		destination = self.boxOfDestiny.text()
 		stateO,stateD = self.checkVertexExists(origin,destination,newJson)
@@ -162,7 +165,7 @@ class PWindow(QMainWindow):
 		titleSubTable = ("%s" % ('\tPeso\t|\tRuta\n'))
 		dates = ""
 		for i in paths:
-			temp = ("'\tPeso\t|\t%s\n" % (i))
+			temp = ("'\tPeso\t|\t%s\n" % (",".join(i)))
 			dates = dates + temp
 
 		content = title + titleSubTable + dates

@@ -60,6 +60,7 @@ class BuildPaths:
 		while self.stack:                                            #Mientras la cola tenga valores.
 			tempPath = self.stack.pop()                              #Extra el ultimo indice de la lista.
 			key = tempPath[-1]                                       #Extrae el ultimo valor del elemento.
+			#print(dict[key][0][0])
 			for i in self.subtractLists(dict[key],tempPath):         #Llama a la funcion que 'resta' los elementos de las listas dadas, devolviendo otra lista.
 				if i == destination:                                 #Stop si el valor de la 'resta' es el destino deseado.
 					self.paths.append(tempPath + [i])                #Se agrega a la variable de rutas.
@@ -71,15 +72,25 @@ class BuildPaths:
 	def subtractLists(self,listaA,listaB):
 		listTemp = []
 		for i in listaA:
-			if i in listaB:
+			#print(i[0])
+			if i[0] in listaB:
 				pass
 			else:
-				listTemp.append(i)
+				listTemp.append(i[0])
+		#print(listTemp)
 		return listTemp
 	
 	def getPaths(self):
 		return self.paths
+"""
+graf = {
+		'A':[['B',5]],
+		'B':[['A',5],['C',6]],
+		'C':[['B',6]],
+		}
 
-#vertexA = Vertex("A")
-#vertexA.addCharacteristics("10","50","5","200","Wifi")
-#vertexA.getWeight()
+
+prueba = BuildPaths()
+prueba.findPaths("A","C",graf)
+print(prueba.paths)
+"""
