@@ -1,0 +1,52 @@
+D
+	C
+		Distancia:30
+		Tipo de medio:Wifi
+		Ancho de banda:300
+		Cantidad de usuarios:6
+		Cantidad de trafico:180
+A
+	C
+		Distancia:30
+		Tipo de medio:Wifi
+		Ancho de banda:300
+		Cantidad de usuarios:6
+		Cantidad de trafico:180
+	B
+		Distancia:21
+		Tipo de medio:CAT5
+		Ancho de banda:200
+		Cantidad de usuarios:4
+		Cantidad de trafico:120
+C
+	A
+		Distancia:10
+		Tipo de medio:Coaxcial
+		Ancho de banda:100
+		Cantidad de usuarios:2
+		Cantidad de trafico:60
+	D
+		Distancia:60
+		Tipo de medio:Fibra Optica
+		Ancho de banda:400
+		Cantidad de usuarios:8
+		Cantidad de trafico:240
+	B
+		Distancia:21
+		Tipo de medio:CAT5
+		Ancho de banda:200
+		Cantidad de usuarios:4
+		Cantidad de trafico:120
+B
+	C
+		Distancia:30
+		Tipo de medio:Wifi
+		Ancho de banda:300
+		Cantidad de usuarios:6
+		Cantidad de trafico:180
+	A
+		Distancia:10
+		Tipo de medio:Coaxcial
+		Ancho de banda:100
+		Cantidad de usuarios:2
+		Cantidad de trafico:60
