@@ -51,6 +51,7 @@ class PWindow(QMainWindow):
 		self.setStyleSheet(paint)
 		self.centerWindow()
 
+	#Define y establece las cajas de texto para la ruta origen y destino.
 	def boxsText(self):
 		self.boxOfCharacteristics = QTextEdit(self)
 		#self.resize(550,450)
@@ -65,6 +66,7 @@ class PWindow(QMainWindow):
 		self.labelTextMessage = QLabel()
 		self.labelTextMessage.setEnabled(False)
 
+	#Creacion de los botones de la ventana.
 	def buttons(self):
 		self.btnFileUpload = QPushButton("Cargar archivo")
 		self.btnFileUpload.setFixedSize(212,60)
@@ -82,6 +84,7 @@ class PWindow(QMainWindow):
 		self.btnCreateTable.setToolTip("Crear tabla con la informacion dada")
 		self.btnCreateTable.clicked.connect(self.enableButtonCreateTable)
 
+	#Ordenamiento por cajas de los widgets.
 	def layoutPWindow(self):
 		self.hBoxCharacteristicsLayout = QHBoxLayout()
 		self.hBoxCharacteristicsLayout.addWidget(self.boxOfCharacteristics)
@@ -109,11 +112,13 @@ class PWindow(QMainWindow):
 		self.setCentralWidget(self.orderingLayout)
 
 #-----------------FUNCIONES GENERALES------------------
+	#Funcion que se activa al presionar el boton de crear mapa.
 	def enableCreateMap(self):
 		G = nx.DiGraph()
 		fig = plt.figure()
 		self.enableLabel(False)
 		
+		#Recorre el diccionario creado del texto, extrayendo sus llaves,valores,peso para dibujar.
 		if(self.objectGraph != None):
 			g = self.objectGraph.vertices
 			for k,v in g.items():
@@ -121,15 +126,16 @@ class PWindow(QMainWindow):
 					G.add_node(str(k))
 					G.add_edge(str(k), str(aris),weight=int(w),background_weight='black')
 
+			#Establece y determina el dibujado utilizando 'nx'.
 			pos = nx.spring_layout(G)
 			nx.draw(G,pos,rows=True, with_labels=True,node_color='skyblue',node_shape="o",node_size=4000,edge_color='lightblue',arrowsize=20,font_color='white',style='dashed')		
 			labels = nx.get_edge_attributes(G,'weight')
 			nx.draw_networkx_edge_labels(G,pos,edge_labels=labels,font_family='sans-serif')
 			
 			#fig.set_facecolor("#00000F")
-			plt.savefig('graph.png') #facecolor=fig.get_facecolor() )
+			plt.savefig('graph.png') #facecolor=fig.get_facecolor() )				#Guarda la imagen dado una ruta.
 			
-			self.openMapWindow()
+			self.openMapWindow()													#Abre otra ventana para mostrar el mapa creado.
 		else:
 			self.enableLabel(True,"No hay un archivo cargado para dibujar el mapa.")
 
@@ -137,26 +143,27 @@ class PWindow(QMainWindow):
 	def enableButtonUpload(self):
 		filePath = QFileDialog.getOpenFileName(self, "Selecciona el archivo a cargar.")
 		filePath = filePath[0]		
-		if(filePath != ''):
-			tempList = self.extractContentToBoxOfCharacteristics(filePath)
-			self.content = "".join(tempList)
+		if(filePath != ''):																#Si se ha elegido un archivo, caso contrario muestra un mensaje.
+			tempList = self.extractContentToBoxOfCharacteristics(filePath)				#Guarda el contenido extraido del archivo cargado.
+			self.content = "".join(tempList)											
 			self.boxOfCharacteristics.setText(self.content)								#Traspasa el contenido cargado a la caja de texto.
 
 			LLOfVertex = self.extractValuesToTextFormat()		
-			self.objectGraph = self.convertLLInDict(LLOfVertex)							#La variable con el json del contenido de la caja de texto.
+			self.objectGraph = self.convertLLInDict(LLOfVertex)							#La variable con el diccionario del contenido de la caja de texto.
 
+	#Funcion que usa al presionar el boton crear tabla.
 	def enableButtonCreateTable(self):
 		newJson = {}
 		buildPaths = BuildPaths()
 		paths = None
 		LLOfPathsAndWeigth = LinkedList()
-		sort = QuickSort()
+		sort = QuickSort()																#Algoritmo de ordenamiemto, utilizado para ordenar ascendentemente los pesos de las rutas.
 		arrWeight = []
 		self.enableLabel(False)
-		if(self.objectGraph != None):
+		if(self.objectGraph != None):													#Si hay un diccionario, == None cuando no se ha cargado un archivo.
 			jsonGraph = self.objectGraph.vertices
 			
-			for k,v in jsonGraph.items():
+			for k,v in jsonGraph.items():												#Recorre el diccionario.
 				newJson[k]=[]
 				for aris,w in v.items():
 					temp = []
@@ -164,15 +171,14 @@ class PWindow(QMainWindow):
 					temp.append(w)
 					newJson[k].append(temp)
 
-			origin = self.boxOfOrigin.text()
-			destination = self.boxOfDestiny.text()
+			origin = self.boxOfOrigin.text()											#Extrae el texto de la caja origen.
+			destination = self.boxOfDestiny.text()										#Extrae el texto de la caja destino.
 			stateO,stateD = self.checkVertexExists(origin,destination,newJson)
 
 			#------------Control del input del origen y dpyestino------------
-			if(stateO == True and stateD == True):
-				buildPaths.findPaths(origin,destination,newJson)
-				paths = buildPaths.getPaths()
-				#print(paths)
+			if(stateO == True and stateD == True):										#En caso que los valores de las cajas, existan en el diccionario.
+				buildPaths.findPaths(origin,destination,newJson)						#Busca todas las rutas desde el punto origen, al destino.
+				paths = buildPaths.getPaths()											#Devuelve y guarda las rutas encontradas.
 				self.labelTextMessage.setVisible(False)
 
 				title = ("%s\n%s%s%s\n%s\n" % ('='*78,'\t'*3,'T A B L A  D E  R U T A S','\t'*3,'='*78))
@@ -198,7 +204,7 @@ class PWindow(QMainWindow):
 							dates = dates + temp
 							state = False
 						
-				content = title + titleSubTable + dates
+				content = title + titleSubTable + dates															#Contiene todo el contenido a mostrar en la ventana de la tabla.
 				self.openTableWindows(content)
 			
 			elif(stateO == True and stateD == False):
@@ -216,7 +222,7 @@ class PWindow(QMainWindow):
 			self.enableLabel(True,"No hay un archivo cargado para obtener la tabla.")
 
 
-	#Funcion que extrae los pesos entre los nodos/vertices.
+	#Funcion que extrae el peso de las aristas, reciendo las rutas y el objeto grafo.
 	def searchWeight(self,paths,jsonGraph):
 		arrWeigth = []
 		weigth = 0
@@ -244,7 +250,7 @@ class PWindow(QMainWindow):
 		f.close()
 		return tempList
 
-
+	#Revisa si los vertices existen en el diccionario dado.
 	def checkVertexExists(self,origin,destination,json):
 		tempArr = []
 		for k in json.keys():
@@ -303,7 +309,7 @@ class PWindow(QMainWindow):
 		#vertexLL.first.next.edges._printToNormal()
 		return vertexLL
 
-	#Convierte los datos extraidos del texto, a un diccionario, para luego crear el mapa.
+	#Convierte los datos extraidos del texto que fueron almacenados en una LL, a un diccionario, para luego crear el mapa.
 	def convertLLInDict(self,LLOfVertex):
 		graph = Graph()
 		LLOfEdges = LinkedList()
@@ -311,7 +317,6 @@ class PWindow(QMainWindow):
 			currentVertex = LLOfVertex.atPosition(i)									#Vertice actual.
 			vertex = Vertex(currentVertex.name)
 			LLOfEdges.add(currentVertex.name,vertex,None,None,None,None)					#Almacena los vertices 
-			#vertex.addCharacteristics(currentVertex.distance,currentVertex.bandwidth,currentVertex.usersOnline,currentVertex.traffic,currentVertex.meanType)
 			
 		for j in range(LLOfVertex.length()):
 			currentVertex = LLOfVertex.atPosition(j)
@@ -331,22 +336,26 @@ class PWindow(QMainWindow):
 		newChar = string[indexFindChar+1 : _len]
 		return newChar
 
+	#Activa un texto en la pantalla, mandando como parametro el texto a mostrar.
 	def enableLabel(self,state,text = ''):
 		self.labelTextMessage.setVisible(state)
 		self.labelTextMessage.setEnabled(state)
 		self.labelTextMessage.setText(text)
 		self.labelTextMessage.setStyleSheet('QLabel {color: red}')
 		self.labelTextMessage.setFont(QFont("Times Font", 10))	
-				
+	
+	#Centrado de la ventana.
 	def centerWindow(self):
 		screen = QDesktopWidget().screenGeometry()
 		size = self.geometry()
 		self.move(size.width()*1.5,size.height())
 
+	#Abre la ventana que muetra el mapa.
 	def openMapWindow(self):
 		self.a = MapWindow()
 		self.a.show()
-
+	
+	#Abre la ventana que muestra la tabla.
 	def openTableWindows(self,content):
 		self.b = TableWindow(content)
 		self.b.show()

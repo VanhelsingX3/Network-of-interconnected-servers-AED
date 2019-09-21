@@ -1,3 +1,4 @@
+#Clase utilizada para encontrar las rutas de un grafo, desde un punto A a un punto B.
 class BuildPaths:
     def __init__(self):
         self.stack = []
@@ -25,19 +26,3 @@ class BuildPaths:
             else:
                 listTemp.append(i)
         return listTemp
-                
-"""
-graph = {
-        'A': ['B','E'],
-        'B': ['A','C','D'],
-        'C': ['B'],
-        'D': ['B','G','E'],
-        'E': ['A','D','F'],
-        'F': ['E','G'],
-        'G': ['D','F'],
-        }
-
-building = BuildPaths()
-building.findPaths('A','C',graph)
-print(building.paths)
-"""

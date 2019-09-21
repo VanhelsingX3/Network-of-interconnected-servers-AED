@@ -23,6 +23,7 @@ class LinkedList:
 			while(current.next):
 				current = current.next
 			current.next = Node(name,distance,bandwidth,usersOnline,traffic,meanType)
+	
 	#Buscar en la lista.
 	def searchInLL(self,name,state = 0):			#Busqueda de un elemento, state =0 para devolver el nodo, state = 1 para regresar un boolean
 		current = self.first
@@ -45,12 +46,6 @@ class LinkedList:
 					if (current.name == name):
 						return True
 				return False
-
-	def getLast(self):
-		last = self.first
-		while(last.next):
-			last = last.next
-		return last
 
 	#Obtener el tamano de la lista.
 	def length(self):
@@ -98,13 +93,3 @@ class LinkedList:
 				print (current.name)
 		else:
 			return None
-
-"""
-prueba = LinkedList()
-prueba.add("Servidor1",10,20,30,40,"Wifi")
-prueba.add("Servidor2",20,40,60,80,"Coaxiado")
-prueba.add("Servidor3",30,60,90,120,"Fibra Optica")
-prueba.add("Servidor4",40,80,120,1600,"CAT5")
-
-prueba._printToNormal()
-"""

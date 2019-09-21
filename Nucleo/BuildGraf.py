@@ -1,32 +1,36 @@
-#from recursiveJson import *
+#Clase para los vertices.
 class Vertex:
 	def __init__(self,name):
 		self.name = name
 		self.edges ={}
 		self.weight = 10
 
+	#Utilizada para agregar una arista a un vertices, recibiendo sus caracteristicas.
 	def addEdge(self,node,distance,bandwidth,usersOnline,traffic,meanType):
-		self.edges[node.name] = self.getWeight(distance,bandwidth,usersOnline,traffic,meanType)
+		self.edges[node.name] = self.getWeight(distance,bandwidth,usersOnline,traffic,meanType)						
 
-	#Retortnar el peso.
+	#Retortnar el peso calculado.
 	def getWeight(self,distance,bandwidth,usersOnline,traffic,meanType):
 		return self.weight
+
 
 #Clase para gestion de los vertices en el grafo.
 class Graph:
 	def __init__(self):
 		self.vertices = {}										#{A:{B:10}}
 
+	#Agregar vertice.
 	def addVertex(self,vertex):
 		self.vertices["%s" % (vertex.name)] = vertex.edges
 
+	#imrpimir el grafo.
 	def printGraph(self):
 		graf = self.vertices
 		for k,v in graf.items():
-			#print("Vertice:%s" % k)
 			for aris,w in v.items():
 				print("Vertice:%s\tArista:%s - peso:%s" % (k,aris,w)) 
 
+	#Busca el peso entre un Vertice y Otro.
 	def searchEdgeWeight(self,nameVertex1,nameVertex2):
 		for k,v in self.vertices.items():					#k = str, v = dict
 			if(k == nameVertex1):
@@ -34,17 +38,7 @@ class Graph:
 					if(aris == nameVertex2):						
 						#print("k:%s aris:%s - w:%s" %(k,aris,w))
 						return w						#Retorna el peso entre las aristas.
-"""
-graf = Graph()
-vertexA = Vertex("A")
-vertexB = Vertex("B")
-vertexA.addEdge(vertexB,100,50,5,70,"Wifi")
-vertexB.addEdge(vertexA,100,50,5,70,"Wifi")
-graf.addVertex(vertexA)
-graf.addVertex(vertexB)
-graf.searchEdgeWeight("A","B")
-#graf.printGraph()
-"""
+
 #-------------------------------------------------------------------------------------------------------------------
 #Clase para encontrar las rutas de un grafo.
 class BuildPaths:
@@ -80,15 +74,3 @@ class BuildPaths:
 	
 	def getPaths(self):
 		return self.paths
-"""
-graf = {
-		'A':[['B',5]],
-		'B':[['A',5],['C',6]],
-		'C':[['B',6]],
-		}
-
-
-prueba = BuildPaths()
-prueba.findPaths("A","C",graf)
-print(prueba.paths)
-"""
