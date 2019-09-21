@@ -21,14 +21,34 @@ class PWindow(QMainWindow):
 		self.boxsText()
 		self.buttons()	
 		self.layoutPWindow()
+
+		self.objectGraph = None
+
+
 		#self.openMapWindow()
-		css = """
+		paint = """
 		QMainWindow{
-	  	background-color: lightblue;
+	  	background-color:skyblue;
 	  	color:black;
+	  	background-repeat:no-repeat;
+		background-position:center top;
+		}QPushButton{
+			background-color: lightblue;
+			color:black;
+			border-style: solid;
+			border-radius: 7;
+			padding: 5px;
+			padding-left: 7px;
+			padding-right: 30px;
+			border-color: black;
+			border-width: 2px;
+			font-family:Arial;
+			font-size : 28
+
+		}
 		"""
 
-		#self.setStyleSheet(css)
+		self.setStyleSheet(paint)
 		self.centerWindow()
 
 	def boxsText(self):
@@ -36,25 +56,29 @@ class PWindow(QMainWindow):
 		#self.resize(550,450)
 		self.boxOfOrigin = QLineEdit(self)
 		self.boxOfOrigin.setPlaceholderText("Nodo origen")
-		self.boxOfOrigin.resize(20,10)
+		self.boxOfOrigin.setFixedSize(212,40)
 
 		self.boxOfDestiny = QLineEdit(self)
 		self.boxOfDestiny.setPlaceholderText("Nodo Destino")
-		self.boxOfDestiny.resize(20,10)
+		self.boxOfDestiny.setFixedSize(212,40)
 
 		self.labelTextMessage = QLabel()
 		self.labelTextMessage.setEnabled(False)
 
 	def buttons(self):
 		self.btnFileUpload = QPushButton("Cargar archivo")
+		self.btnFileUpload.setFixedSize(212,60)
+		#self.btnFileUpload.bor
 		self.btnFileUpload.setToolTip("Carga un archivo para crear un mapa")
 		self.btnFileUpload.clicked.connect(self.enableButtonUpload)
 
 		self.btnCreateMap = QPushButton("Crear mapa")
+		self.btnCreateMap.setFixedSize(212,60)
 		self.btnCreateMap.setToolTip("Carga un archivo para crear un mapa")
 		self.btnCreateMap.clicked.connect(self.enableCreateMap)
 		
 		self.btnCreateTable = QPushButton("Crear tabla")
+		self.btnCreateTable.setFixedSize(212,60)
 		self.btnCreateTable.setToolTip("Crear tabla con la informacion dada")
 		self.btnCreateTable.clicked.connect(self.enableButtonCreateTable)
 
@@ -88,110 +112,109 @@ class PWindow(QMainWindow):
 	def enableCreateMap(self):
 		G = nx.DiGraph()
 		fig = plt.figure()
+		self.enableLabel(False)
 		
-		g = self.objectGraph.vertices
-		for k,v in g.items():
-			#G.add_node(str(k))
-			for aris,w in v.items():
-				G.add_node(str(k))
-				G.add_edge(str(k), str(aris),weight=int(w),background_weight='black')
+		if(self.objectGraph != None):
+			g = self.objectGraph.vertices
+			for k,v in g.items():
+				for aris,w in v.items():
+					G.add_node(str(k))
+					G.add_edge(str(k), str(aris),weight=int(w),background_weight='black')
 
-		pos = nx.spring_layout(G)
-		nx.draw(G,pos,rows=True, with_labels=True,node_color='skyblue',node_shape="o",node_size=4000,edge_color='lightblue',arrowsize=20,font_color='white',style='dashed')		
-		labels = nx.get_edge_attributes(G,'weight')
-		nx.draw_networkx_edge_labels(G,pos,edge_labels=labels,font_family='sans-serif')
-		
-		#fig.set_facecolor("#00000F")
-		plt.savefig('graph.png') #facecolor=fig.get_facecolor() )
-		
-		self.openMapWindow()
-		
+			pos = nx.spring_layout(G)
+			nx.draw(G,pos,rows=True, with_labels=True,node_color='skyblue',node_shape="o",node_size=4000,edge_color='lightblue',arrowsize=20,font_color='white',style='dashed')		
+			labels = nx.get_edge_attributes(G,'weight')
+			nx.draw_networkx_edge_labels(G,pos,edge_labels=labels,font_family='sans-serif')
+			
+			#fig.set_facecolor("#00000F")
+			plt.savefig('graph.png') #facecolor=fig.get_facecolor() )
+			
+			self.openMapWindow()
+		else:
+			self.enableLabel(True,"No hay un archivo cargado para dibujar el mapa.")
+
 	#Carga el archivo de texto, y lo excribe en la caja de EditText
 	def enableButtonUpload(self):
 		filePath = QFileDialog.getOpenFileName(self, "Selecciona el archivo a cargar.")
-		filePath = filePath[0]
-		tempList = []
-		
-		f = open(filePath,"r")
-		lineas = f.readlines()
-		for i in lineas:
-			tempList.append(i)
-		f.close()
-		self.content = "".join(tempList)
-		self.boxOfCharacteristics.setText(self.content)								#Traspasa el contenido cargado a la caja de texto.
+		filePath = filePath[0]		
+		if(filePath != ''):
+			tempList = self.extractContentToBoxOfCharacteristics(filePath)
+			self.content = "".join(tempList)
+			self.boxOfCharacteristics.setText(self.content)								#Traspasa el contenido cargado a la caja de texto.
 
-		LLOfVertex = self.extractValuesToTextFormat()		
-		self.objectGraph = self.convertLLInDict(LLOfVertex)							#La variable con el json del contenido de la caja de texto.
+			LLOfVertex = self.extractValuesToTextFormat()		
+			self.objectGraph = self.convertLLInDict(LLOfVertex)							#La variable con el json del contenido de la caja de texto.
 
 	def enableButtonCreateTable(self):
 		newJson = {}
 		buildPaths = BuildPaths()
-		jsonGraph = self.objectGraph.vertices
 		paths = None
 		LLOfPathsAndWeigth = LinkedList()
 		sort = QuickSort()
 		arrWeight = []
-		
-
-		for k,v in jsonGraph.items():
-			newJson[k]=[]
-			for aris,w in v.items():
-				temp = []
-				temp.append(aris)
-				temp.append(w)
-				newJson[k].append(temp)
-
-		origin = self.boxOfOrigin.text()
-		destination = self.boxOfDestiny.text()
-		stateO,stateD = self.checkVertexExists(origin,destination,newJson)
-
-		#------------Control del input del origen y dpyestino------------
-		if(stateO == True and stateD == True):
-			buildPaths.findPaths(origin,destination,newJson)
-			paths = buildPaths.getPaths()
-			self.labelTextMessage.setVisible(False)
-
-			title = ("%s\n%s%s%s\n%s\n" % ('='*78,'\t'*3,'T A B L A  D E  R U T A S','\t'*3,'='*78))
-			titleSubTable = ("%s" % ('\tPeso\t|\tRuta\n'))
-			dates = ""
+		self.enableLabel(False)
+		if(self.objectGraph != None):
+			jsonGraph = self.objectGraph.vertices
 			
-			#Este ciclo recorrera todos las rutas, para guardarlas en una LL, para asi mas adelante poder ordenar las rutas desde el menor peso, al mayor peso...
-			#...por el cual el primer o primeros elementos de la lista en tabla, sera la ruta mas corta.
-			for i in paths:																					#Ruta de vertices
-				weight = self.searchWeight(i,self.objectGraph)
-				LLOfPathsAndWeigth.add(i,weight,None,None,None,None)										#name:ruta,distance:peso
-				arrWeight.append(weight)
+			for k,v in jsonGraph.items():
+				newJson[k]=[]
+				for aris,w in v.items():
+					temp = []
+					temp.append(aris)
+					temp.append(w)
+					newJson[k].append(temp)
+
+			origin = self.boxOfOrigin.text()
+			destination = self.boxOfDestiny.text()
+			stateO,stateD = self.checkVertexExists(origin,destination,newJson)
+
+			#------------Control del input del origen y dpyestino------------
+			if(stateO == True and stateD == True):
+				buildPaths.findPaths(origin,destination,newJson)
+				paths = buildPaths.getPaths()
+				#print(paths)
+				self.labelTextMessage.setVisible(False)
+
+				title = ("%s\n%s%s%s\n%s\n" % ('='*78,'\t'*3,'T A B L A  D E  R U T A S','\t'*3,'='*78))
+				titleSubTable = ("%s" % ('\tPeso\t|\tRuta\n'))
+				dates = ""
+				
+				#Este ciclo recorrera todos las rutas, para guardarlas en una LL, para asi mas adelante poder ordenar las rutas desde el menor peso, al mayor peso...
+				#...por el cual el primer o primeros elementos de la lista en tabla, sera la ruta mas corta.
+				for i in paths:																					#Ruta de vertices
+					weight = self.searchWeight(i,self.objectGraph)
+					LLOfPathsAndWeigth.add(i,weight,None,None,None,None)										#name:ruta,distance:peso
+					arrWeight.append(weight)
+				
+				sort.sort(arrWeight)
+				tempPath = []
+				for j in arrWeight:
+					state = True
+					for k in range(LLOfPathsAndWeigth.length()):
+						currentNode = LLOfPathsAndWeigth.atPosition(k)
+						if(j == currentNode.distance and currentNode.name not in tempPath and state == True):															#En el atributo distance esta guardado el peso.
+							tempPath.append(currentNode.name)
+							temp = ("%s\n\t%s\t|\t%s\n" % ('-'*139,j,",".join(currentNode.name)))
+							dates = dates + temp
+							state = False
+						
+				content = title + titleSubTable + dates
+				self.openTableWindows(content)
 			
-			sort.sort(arrWeight)
-			tempPath = []
-			for j in arrWeight:
-				state = True
-				for k in range(LLOfPathsAndWeigth.length()):
-					currentNode = LLOfPathsAndWeigth.atPosition(k)
-					print(currentNode.name)
-					if(j == currentNode.distance and currentNode.name not in tempPath and state == True):															#En el atributo distance esta guardado el peso.
-						tempPath.append(currentNode.name)
-						temp = ("%s\n\t%s\t|\t%s\n" % ('-'*139,j,",".join(currentNode.name)))
-						dates = dates + temp
-						state = False
-					
-			content = title + titleSubTable + dates
-			self.openTableWindows(content)
-		
+			elif(stateO == True and stateD == False):
+				self.enableLabel(True,'El valor destino no existe')
+				print("True","False")
+			
+			elif(stateO == False and stateD == True):
+				print("False,True")
+				self.enableLabel(True,'El valor origen no existe')
+			
+			elif(stateO == False and stateD == False):
+				self.enableLabel(True,'El valor origen y destino no existen')
+				print("False,False")				
+		else:
+			self.enableLabel(True,"No hay un archivo cargado para obtener la tabla.")
 
-
-
-		elif(stateO == True and stateD == False):
-			self.enableLabel(True,'El valor destino no existe')
-			print("True","False")
-		
-		elif(stateO == False and stateD == True):
-			print("False,True")
-			self.enableLabel(True,'El valor origen no existe')
-		
-		elif(stateO == False and stateD == False):
-			self.enableLabel(True,'El valor origen y destino no existen')
-			print("False,False")				
 
 	#Funcion que extrae los pesos entre los nodos/vertices.
 	def searchWeight(self,paths,jsonGraph):
@@ -206,7 +229,22 @@ class PWindow(QMainWindow):
 		return weigth
 
 	#-----------------------------FUNCIONES LLAMADAS POR LAS GENERALES----------------------------------------------
-	#Devuelve boolean dependiendo de si el valor origen y destino existe en el diccionario.
+	#Esta funcion extrae todo el contenido del archivo seleccionado.	
+	def extractContentToBoxOfCharacteristics(self,filePath):
+		tempList = []
+		f = open(filePath,"r")
+		lineas = f.readlines()
+		size = len(lineas)
+		for i in range(len(lineas)):
+			tempList.append(lineas[i])
+			
+			if(i == size-1):
+				if(lineas[i] != '\n'):
+					tempList.append('\n')
+		f.close()
+		return tempList
+
+
 	def checkVertexExists(self,origin,destination,json):
 		tempArr = []
 		for k in json.keys():
@@ -242,29 +280,26 @@ class PWindow(QMainWindow):
 						vertexLL.add(name,None,None,None,None,None)
 						#print("%s,%s,%s,%s,%s,%s" % (name,bandwidth,usersOnline,traffic,distance,meanType))
 						break
-		#vertexLL._printToNormal()
-		
 		for k in range(len(textOfBoxOfCharacteristics)):						#Recorrera el contenido de la caja, para obtener las aristas.
 			itemVertex = textOfBoxOfCharacteristics[k]
 			if(itemVertex.find('\t') == -1):
-				#print(itemVertex)
 				if(vertexLL.searchInLL(itemVertex,1) == True):
 					for m in range(len(textOfBoxOfCharacteristics)):
 						currentEdge = textOfBoxOfCharacteristics[m]	
 						if(currentEdge == itemVertex):
-							#print(currentEdge)
 							index = m + 1
 							if(index < len(textOfBoxOfCharacteristics)):
 								while(textOfBoxOfCharacteristics[index].count('\t') >= 1):
 									if(textOfBoxOfCharacteristics[index].count('\t') == 1):
 										name = textOfBoxOfCharacteristics[index].strip()
 										distance = self.extractValueToString(textOfBoxOfCharacteristics[index+1]).strip()
-										meanType = self.extractValueToString(textOfBoxOfCharacteristics[index+2]).strip()
-										bandwidth = self.extractValueToString(textOfBoxOfCharacteristics[index+3]).strip()
-										usersOnline = self.extractValueToString(textOfBoxOfCharacteristics[index+4])
-										traffic = self.extractValueToString(textOfBoxOfCharacteristics[index+5])
+										bandwidth = self.extractValueToString(textOfBoxOfCharacteristics[index+2]).strip()
+										usersOnline = self.extractValueToString(textOfBoxOfCharacteristics[index+3]).strip()
+										traffic = self.extractValueToString(textOfBoxOfCharacteristics[index+4])
+										meanType = self.extractValueToString(textOfBoxOfCharacteristics[index+5])
+										#print("%s,%s,%s,%s,%s,%s"%(name,distance,bandwidth,usersOnline,traffic,meanType))
 										vertexLL.searchInLL(itemVertex).edges.add(name,bandwidth,usersOnline,traffic,distance,meanType)
-									index += 1
+									index +=1
 		#vertexLL.first.next.edges._printToNormal()
 		return vertexLL
 
@@ -285,7 +320,6 @@ class PWindow(QMainWindow):
 				edge = currentVertex.edges.atPosition(k)					#Nodo arista
 				objEdge = LLOfEdges.searchInLL(edge.name)					#Nodo arista(class vertex)
 				vertex.addEdge(objEdge,edge.distance,edge.bandwidth,edge.usersOnline,edge.traffic,edge.meanType)
-			
 			graph.addVertex(vertex)
 
 		return graph
@@ -349,7 +383,7 @@ class TableWindow(QWidget):
 	
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
-	#app.setWindowIcon(QtGui.QIcon("images/icon_application.png"))
+	app.setWindowIcon(QIcon("IconImagen/Icono_Programa.png"))
 
 	window = PWindow()
 	window.setWindowTitle("Mapa de grafos")
