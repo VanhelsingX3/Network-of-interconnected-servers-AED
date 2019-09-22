@@ -1,6 +1,6 @@
 Servidor C
 	Servidor B
-		Distancia:21
+		Distancia:900
 		Ancho de banda:200
 		Cantidad de usuarios:4
 		Cantidad de trafico:120
@@ -13,90 +13,90 @@ Servidor F
 		Cantidad de trafico:420
 		Tipo de medio:Wifi
 	Servidor E
-		Distancia:90
+		Distancia:900
 		Ancho de banda:500
 		Cantidad de usuarios:10
 		Cantidad de trafico:300
-		Tipo de medio:Coaxcial
+		Tipo de medio:Coaxial
 Servidor A
 	Servidor E
-		Distancia:90
+		Distancia:980
 		Ancho de banda:500
 		Cantidad de usuarios:10
 		Cantidad de trafico:300
 		Tipo de medio:CAT6
 	Servidor B
-		Distancia:110
+		Distancia:1110
 		Ancho de banda:400
 		Cantidad de usuarios:9
 		Cantidad de trafico:350
-		Tipo de medio:Cable-Trenzado
+		Tipo de medio:Par-Trenzado
 Servidor E
 	Servidor A
-		Distancia:10
+		Distancia:1200
 		Ancho de banda:100
 		Cantidad de usuarios:2
 		Cantidad de trafico:60
-		Tipo de medio:Coaxcial
+		Tipo de medio:Coaxial
 	Servidor F
-		Distancia:120
+		Distancia:2300
 		Ancho de banda:600
 		Cantidad de usuarios:12
 		Cantidad de trafico:360
-		Tipo de medio:Cable-Trenzado
+		Tipo de medio:Par-Trenzado
 	Servidor D
-		Distancia:60
+		Distancia:1660
 		Ancho de banda:400
 		Cantidad de usuarios:8
 		Cantidad de trafico:240
 		Tipo de medio:Fibra-Optica
 Servidor G
 	Servidor F
-		Distancia:120
+		Distancia:720
 		Ancho de banda:600
 		Cantidad de usuarios:12
 		Cantidad de trafico:360
 		Tipo de medio:CAT5
 	Servidor D
-		Distancia:60
+		Distancia:560
 		Ancho de banda:400
 		Cantidad de usuarios:8
 		Cantidad de trafico:240
 		Tipo de medio:Fibra-Optica
 Servidor D
 	Servidor G
-		Distancia:180
+		Distancia:380
 		Ancho de banda:700
 		Cantidad de usuarios:14
 		Cantidad de trafico:420
-		Tipo de medio:Cable-Trenzado
+		Tipo de medio:Par-Trenzado
 	Servidor E
-		Distancia:90
+		Distancia:990
 		Ancho de banda:500
 		Cantidad de usuarios:10
 		Cantidad de trafico:300
 		Tipo de medio:CAT6
 	Servidor B
-		Distancia:21
+		Distancia:321
 		Ancho de banda:200
 		Cantidad de usuarios:4
 		Cantidad de trafico:120
 		Tipo de medio:CAT5
 Servidor B
 	Servidor C
-		Distancia:30
+		Distancia:370
 		Ancho de banda:300
 		Cantidad de usuarios:6
 		Cantidad de trafico:180
 		Tipo de medio:Wifi
 	Servidor A
-		Distancia:10
+		Distancia:910
 		Ancho de banda:100
 		Cantidad de usuarios:2
 		Cantidad de trafico:60
-		Tipo de medio:Coaxcial
+		Tipo de medio:Coaxial
 	Servidor D
-		Distancia:60
+		Distancia:650
 		Ancho de banda:400
 		Cantidad de usuarios:8
 		Cantidad de trafico:240
