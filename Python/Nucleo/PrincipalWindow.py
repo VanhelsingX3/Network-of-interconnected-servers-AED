@@ -392,7 +392,7 @@ class TableWindow(QWidget):
 	
 if __name__ == "__main__":
 	app = QApplication(sys.argv)
-	app.setWindowIcon(QIcon("IconImagen/Icono_Programa.png"))
+	app.setWindowIcon(QIcon("Nucleo/IconImagen/Icono_Programa.png"))
 
 	window = PWindow()
 	window.setWindowTitle("Mapa de grafos")
