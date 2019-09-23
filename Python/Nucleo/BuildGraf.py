@@ -1,17 +1,79 @@
+# -*- coding: utf-8 -*-
 #Clase para los vertices.
 class Vertex:
 	def __init__(self,name):
 		self.name = name
 		self.edges ={}
-		self.weight = 10
+		self.weight = None
 
 	#Utilizada para agregar una arista a un vertices, recibiendo sus caracteristicas.
 	def addEdge(self,node,distance,bandwidth,usersOnline,traffic,meanType):
 		self.edges[node.name] = self.getWeight(distance,bandwidth,usersOnline,traffic,meanType)						
-
+	
 	#Retortnar el peso calculado.
 	def getWeight(self,distance,bandwidth,usersOnline,traffic,meanType):
-		return self.weight
+		subTotalForDistance = self.decreaseInReliability(distance,meanType)
+		subtTotalForBandwidth = self.calculateForBandwidth(bandwidth,usersOnline,traffic)
+		totalReliabilty = subTotalForDistance + subtTotalForBandwidth
+		if(totalReliabilty < 0):
+			totalReliabilty = 0
+		if(totalReliabilty > 1):
+			totalReliabilty = 1
+
+		totalReliabilty = "{0:.2f}".format(totalReliabilty)
+		self.weight = totalReliabilty
+		return float(self.weight)
+
+	def decreaseInReliability(self,distance,meanType):
+		reliability = None
+		partition = None
+		if(meanType == 'CAT5'):
+			reliability = 0.98
+			decrease = 0.02					#Disminucion de confiabilidad%
+			partition = 50 					#Cada partition metros 			
+		if(meanType == 'CAT6'):
+			reliability = 0.98
+			decrease = 0.02
+			partition =	50	
+		if(meanType == 'Fibra-Optica' or meanType == 'Fibra-Óptica'):
+			reliability = 0.90
+			decrease = 0.05		
+			partition =	100	
+		if(meanType == 'Wifi' or meanType == "WIFI"):
+			reliability = 0.7
+			decrease = 0.06		
+			partition =	6	
+		if(meanType == 'Coaxial'):
+			reliability = 1
+			decrease = 0.04		
+			partition =	100	
+		if(meanType == 'Par-Trenzado'):	
+			reliability = 1
+			decrease = 0.01		
+			partition = 100
+		
+		subTotalForDistance = (int(distance)/partition)*decrease
+		totalDistanceDecrease = reliability - subTotalForDistance
+		return totalDistanceDecrease
+
+	def calculateForBandwidth(self,bandwidth,usersOnline,traffic):
+		bandwidth = int(bandwidth)
+		usersOnline = int(usersOnline)
+		traffic = int(traffic)
+		subtTotalForBandwidth = (traffic - bandwidth)/usersOnline						#mbps
+		percentage = (subtTotalForBandwidth/bandwidth)*100
+		reliability = 0
+		if(percentage >=1 and percentage < 25):
+			reliability = 0.05
+		if(percentage >=25 and percentage < 50):
+			reliability = 0.10
+		if(percentage >=50 and percentage < 75):
+			reliability = 0.15
+		if(percentage >= 75 and percentage <=100):
+			reliability = 0.20
+		if(percentage < 1):
+			reliability = 0
+		return reliability	
 
 
 #Clase para gestion de los vertices en el grafo.
@@ -36,8 +98,8 @@ class Graph:
 			if(k == nameVertex1):
 				for aris,w in v.items():
 					if(aris == nameVertex2):						
-						#print("k:%s aris:%s - w:%s" %(k,aris,w))
 						return w						#Retorna el peso entre las aristas.
+
 
 #-------------------------------------------------------------------------------------------------------------------
 #Clase para encontrar las rutas de un grafo.
@@ -69,7 +131,6 @@ class BuildPaths:
 				pass
 			else:
 				listTemp.append(i[0])
-		#print(listTemp)
 		return listTemp
 	
 	def getPaths(self):
