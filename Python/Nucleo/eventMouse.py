@@ -3,9 +3,10 @@ from PyQt5.QtCore import*
 from PyQt5.QtWidgets import*
 
 class hoverButton(QPushButton):
-    def __init__(self, parent=None,objectLabel=None):
+    def __init__(self, parent=None):
         QPushButton.__init__(self, parent)
-        self.objectLabel = objectLabel
+        
+        #Cambios visuales en el boton al soltar el punto.
         self.cssLeaveEvent = """
 			background-color:darkgreen;
 			color:white;
@@ -20,6 +21,7 @@ class hoverButton(QPushButton):
 			font-family:Georgia;
             """
         
+        #Cambios visuales en el boton al pasar el puntero.
         self.cssEnterEvent = """
             background-color:darkred
             """
@@ -30,27 +32,24 @@ class hoverButton(QPushButton):
         self.posicionX = int
         self.posicionY = int
 
+    #Funcion/evento al pasar el mouse por el boton.
     def enterEvent(self, event):
         self.posicionX = self.pos().x()
         self.posicionY = self.pos().y()
-        self.setStyleSheet(self.cssEnterEvent)
-        #self.objectLabel.setVisible(False)
-
+        self.setStyleSheet(self.cssEnterEvent)          #Establece un estilo.
         self.animacionCursor = QPropertyAnimation(self, b"geometry")
         self.animacionCursor.setDuration(100)
         self.animacionCursor.setEndValue(QRect(self.posicionX, self.posicionY, 200, 68))
         self.animacionCursor.start(QAbstractAnimation.DeleteWhenStopped)
-        self.setFixedSize(215,67)
-        self.fuente.setPointSize(11)
+        self.setFixedSize(215,67)                       #Cambia el tamano.
+        self.fuente.setPointSize(11)                    #Fuente y tamano.
         self.setFont(self.fuente)
 
     def leaveEvent(self, event):
         self.fuente.setPointSize(10)
-        #self.objectLabel.setVisible(True)
         self.setFont(self.fuente)
         self.setStyleSheet(self.cssLeaveEvent)
-        #self.setGeometry(120,580,212,60)
-        self.setFixedSize(210,60)
+        self.setFixedSize(210,60)                       #Regresa el valor dado predeterminado.
         self.animacionNoCursor = QPropertyAnimation(self, b"geometry")
         self.animacionNoCursor.setDuration(100)
         self.animacionNoCursor.setEndValue(QRect(self.posicionX, self.posicionY, 200, 68))
