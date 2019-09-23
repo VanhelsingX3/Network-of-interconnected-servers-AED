@@ -12,7 +12,6 @@ class Node:
 class LinkedList:
 	def __init__(self):
 		self.first = None
-		self.listType2 = []
 		
 	def add(self,name,distance,bandwidth,usersOnline,traffic,meanType):
 		if(not self.first):
