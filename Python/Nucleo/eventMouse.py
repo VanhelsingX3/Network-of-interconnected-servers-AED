@@ -8,9 +8,9 @@ class hoverButton(QPushButton):
         
         #Cambios visuales en el boton al soltar el punto.
         self.cssLeaveEvent = """
-			background-color:darkgreen;
+			background-color:#00486e;
 			color:white;
-			font-size: 150;
+			font-size: 150%;
 			border-style: none;
 			border-radius: 7;
 			padding: 5px;
@@ -18,7 +18,7 @@ class hoverButton(QPushButton):
 			padding-right: 30px;
 			border-color: black;
 			border-width: 2px;
-			font-family:Georgia;
+			font-family:Times Font;
             """
         
         #Cambios visuales en el boton al pasar el puntero.
@@ -42,7 +42,7 @@ class hoverButton(QPushButton):
         self.animacionCursor.setEndValue(QRect(self.posicionX, self.posicionY, 200, 68))
         self.animacionCursor.start(QAbstractAnimation.DeleteWhenStopped)
         self.setFixedSize(215,67)                       #Cambia el tamano.
-        self.fuente.setPointSize(11)                    #Fuente y tamano.
+        self.fuente.setPointSize(12)                    #Fuente y tamano.
         self.setFont(self.fuente)
 
     def leaveEvent(self, event):
@@ -54,4 +54,3 @@ class hoverButton(QPushButton):
         self.animacionNoCursor.setDuration(100)
         self.animacionNoCursor.setEndValue(QRect(self.posicionX, self.posicionY, 200, 68))
         self.animacionNoCursor.start(QAbstractAnimation.DeleteWhenStopped)
-

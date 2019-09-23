@@ -114,7 +114,6 @@ class BuildPaths:
 		while self.stack:                                            #Mientras la cola tenga valores.
 			tempPath = self.stack.pop()                              #Extra el ultimo indice de la lista.
 			key = tempPath[-1]                                       #Extrae el ultimo valor del elemento.
-			#print(dict[key][0][0])
 			for i in self.subtractLists(dict[key],tempPath):         #Llama a la funcion que 'resta' los elementos de las listas dadas, devolviendo otra lista.
 				if i == destination:                                 #Stop si el valor de la 'resta' es el destino deseado.
 					self.paths.append(tempPath + [i])                #Se agrega a la variable de rutas.

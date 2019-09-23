@@ -20,31 +20,27 @@ class PWindow(QMainWindow):
 		QMainWindow.setWindowFlags(self, core.Qt.FramelessWindowHint)
 		self.boxsText()
 		self.buttons()	
-		#self.layoutPWindow()
 		self.objectGraph = None
 		
-
-		#self.openMapWindow()
 		paint = """
 		QMainWindow{
-	  	background-color:lightgreen;
+	  	background-color:#3B8A9B;
 	  	color:black;
 		background-image: url("Imagenes/barra.jpg");
 	  	background-repeat:no-repeat;
 		background-position:center top;
 		}QPushButton{
-			background-color:darkgreen;
+			background-color:#00486e;
 			color:white;
-			font-size: 150;
+			font-size: 300%;
 			border-style: none;
 			border-radius: 7;
 			padding: 5px;
 			padding-left: 7px;
 			padding-right: 30px;
-			border-color: black;
+			border-color: darkblue;
 			border-width: 2px;
-			font-family:Georgia;
-			
+			font-family:Times Font;		
 		}
 		"""
 
@@ -82,7 +78,9 @@ class PWindow(QMainWindow):
 
 	#Creacion de los botones de la ventana.
 	def buttons(self):
+		
 		self.btnFileUpload = hoverButton(self)
+		self.btnFileUpload.setFont(QFont("Times Font", 10))
 		self.btnFileUpload.setText("Cargar archivo")
 		self.btnFileUpload.setGeometry(10,510,210,60)
 		self.btnFileUpload.setCursor(Qt.PointingHandCursor)
@@ -91,21 +89,21 @@ class PWindow(QMainWindow):
 		self.btnFileUpload.clicked.connect(self.enableButtonUpload)
 
 		self.btnCreateMap = hoverButton(self)
+		self.btnCreateMap.setFont(QFont("Times Font", 10))
 		self.btnCreateMap.setText("Crear mapa")
 		self.btnCreateMap.setGeometry(231,510,210,60)
 		self.btnCreateMap.setCursor(Qt.PointingHandCursor)
 		self.btnCreateMap.setAutoDefault(False)
-		#self.btnCreateMap.setFixedSize(212,60)
 		self.btnCreateMap.setToolTip("Crear un mapa con el contenido actual.")
 		self.btnCreateMap.clicked.connect(self.enableCreateMap)
 		
 		self.btnCreateTable = hoverButton(self)
+		self.btnCreateTable.setFont(QFont("Times Font", 10))
 		self.btnCreateTable.setText("Crear tabla")
 		self.btnCreateTable.setGeometry(120,580,210,60)
 		self.btnCreateTable.setCursor(Qt.PointingHandCursor)
 		self.btnCreateTable.setAutoDefault(False)
-		#self.btnCreateTable.setFixedSize(212,60)
-		self.btnCreateTable.setToolTip("Crear tabla de rutas")
+		self.btnCreateTable.setToolTip("Crear tabla de rutas.")
 		self.btnCreateTable.clicked.connect(self.enableButtonCreateTable)
 
 		self.minimize = QToolButton(self)
@@ -114,11 +112,6 @@ class PWindow(QMainWindow):
 		self.minimize.setIcon(QIcon("Imagenes/minimizeButton.png"))
 		self.minimize.clicked.connect(self.minimizeWindow)
 		self.minimize.setToolTip("Minimizar")
-
-		#self.maximize = QToolButton(self)
-		#self.maximize.setIcon(QIcon('Imagenes/maximizeButton.png'))
-		#self.maximize.clicked.connect(self.maximizeWindow)
-		#self.maximize.setToolTip("Maximizar")
 
 		self.close = QToolButton(self)
 		self.close.setIcon(QIcon('Imagenes/closeButton.png'))
@@ -129,8 +122,6 @@ class PWindow(QMainWindow):
 
 		self.minimize.setMinimumHeight(30)
 		self.close.setMinimumHeight(30)
-		#self.maximize.setMinimumHeight(30)
-
 
 	#Ordenamiento por cajas de los widgets.
 	def layoutPWindow(self):
@@ -147,13 +138,8 @@ class PWindow(QMainWindow):
 		self.hButtonsUploadAndCreateMapLayout.addWidget(self.btnCreateMap)
 		self.hButtonsUploadAndCreateMapLayout.setGeometry(QRect(10,700,220,50))
 		
-		#self.hButtonCreateTableLayout = QHBoxLayout()
-		#self.hButtonCreateTableLayout.addWidget(self.btnCreateTable)
-		
 		self.hPrincipalTitle = QHBoxLayout(self)
-		#self.hPrincipalTitle.setGeometry(10,10,400,40)
 		self.hPrincipalTitle.addWidget(self.minimize)
-		#self.hPrincipalTitle.addWidget(self.maximize)
 		self.hPrincipalTitle.addWidget(self.close)
 		self.hPrincipalTitle.insertStretch(0)
 		self.hPrincipalTitle.setSpacing(0)
@@ -166,11 +152,8 @@ class PWindow(QMainWindow):
 
 		self.vFinalLayout = QVBoxLayout()
 		self.vFinalLayout.addLayout(self.hPrincipaPositionTitle)
-		#self.vFinalLayout.addLayout(self.hBoxCharacteristicsLayout)
 		self.vFinalLayout.addWidget(self.labelTextMessage)
-		#self.vFinalLayout.addLayout(self.hBoxOriginAndDestinyLayout)
 		self.vFinalLayout.addLayout(self.hButtonsUploadAndCreateMapLayout)
-		#self.vFinalLayout.addLayout(self.hButtonCreateTableLayout)
 
 		self.orderingLayout = QWidget()
 		self.orderingLayout.setLayout(self.vFinalLayout)
@@ -243,7 +226,6 @@ class PWindow(QMainWindow):
 			arrWeight = []
 			self.enableLabel(False)
 
-
 			if(self.objectGraph != None):													#Si hay un diccionario, == None cuando no se ha cargado un archivo.
 				jsonGraph = self.objectGraph.vertices
 				
@@ -293,15 +275,12 @@ class PWindow(QMainWindow):
 				
 				elif(stateO == True and stateD == False):
 					self.enableLabel(True,'El valor destino no existe')
-					#print("True","False")
 				
 				elif(stateO == False and stateD == True):
-					#print("False,True")
 					self.enableLabel(True,'El valor origen no existe')
 				
 				elif(stateO == False and stateD == False):
 					self.enableLabel(True,'El valor origen y destino no existen')
-					#print("False,False")				
 			else:
 				self.enableLabel(True,"No hay un archivo cargado para obtener la tabla.")
 		else:
@@ -461,16 +440,7 @@ class PWindow(QMainWindow):
 	def closeWindow(self):
 		sys.exit()
 	
-	"""
-	#Funcion al boton maximizar ventana.
-	def maximizeWindow(self):
-		if(self.maxNormal):
-			self.showNormal()
-			self.maxNormal= False
-		else:
-			self.showMaximized()
-			self.maxNormal=  True
-	"""
+
 #Ventana que se crea para cargar la imagen del grafo.
 class MapWindow(QDialog):
 	def __init__(self, parent = None):
@@ -483,6 +453,8 @@ class MapWindow(QDialog):
 		label.setPixmap(pixmap)
 		self.resize(pixmap.width(),pixmap.height())
 
+
+#Clase para generar la ventana de la tabla de rutas.
 class TableWindow(QWidget):
 	def __init__(self,contentPaths):
 		QWidget.__init__(self)
