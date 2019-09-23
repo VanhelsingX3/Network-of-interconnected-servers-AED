@@ -1,0 +1,14 @@
+Servidor A
+	Servidor B
+		Distancia:980
+		Ancho de banda:500
+		Cantidad de usuarios:10
+		Cantidad de trafico:300
+		Tipo de medio:CAT6 
+Servidor B
+	Servidor A
+		Distancia:370
+		Ancho de banda:300
+		Cantidad de usuarios:6
+		Cantidad de trafico:180
+		Tipo de medio:Wifi
