@@ -33,7 +33,7 @@ class Vertex:
 			partition = 50 					#Cada partition metros 			
 		if(meanType == 'CAT6'):
 			reliability = 0.98
-			decrease = 0.02
+			decrease = 0.01
 			partition =	50	
 		if(meanType == 'Fibra-Optica' or meanType == 'Fibra-Óptica'):
 			reliability = 0.90
