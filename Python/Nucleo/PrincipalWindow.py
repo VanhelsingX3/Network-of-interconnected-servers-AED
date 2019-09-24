@@ -3,7 +3,7 @@
 from LinkedList import *
 from BuildGraf import *
 from QuickSort import *
-from eventMouse import *
+from EventMouse import *
 from PyQt5.QtGui import*
 from PyQt5.QtCore import*
 from PyQt5.QtWidgets import*
@@ -247,8 +247,8 @@ class PWindow(QMainWindow):
 					paths = buildPaths.getPaths()											#Devuelve y guarda las rutas encontradas.
 					self.labelTextMessage.setVisible(False)
 					
-					title = ("%s\n%s%s%s\n%s\n" % ('='*107,'\t'*4,'T A B L A  D E  R U T A S\n','\t\t\t---La ruta mas optima, es la de mayor peso(confiabilidad)---','='*107))
-					labelPath = ("\t\t\t\tRuta desde %s hasta %s\n"% (origin,destination))
+					title = ("%s\n%s%s%s\n%s\n" % ('='*80,'\t'*3,'T A B L A  D E  R U T A S\n','\t\t---La ruta mas optima, es la de mayor peso(confiabilidad)---','='*80))
+					labelPath = ("\t\tRuta desde %s hasta %s\n"% (origin,destination))
 					titleSubTable = ("%s" % ('\tPeso\t|\tRuta\n'))
 					dates = ""
 					
@@ -266,7 +266,8 @@ class PWindow(QMainWindow):
 							currentNode = LLOfPathsAndWeigth.atPosition(k)
 							if(j == currentNode.distance and currentNode.name not in tempPath and state == True):															#En el atributo distance esta guardado el peso.
 								tempPath.append(currentNode.name)
-								temp = ("%s\n\t%s\t|\t%s\n" % ('-'*190,j,",".join(currentNode.name)))
+								j = "{0:.2f}".format(j)
+								temp = ("%s\n\t%s\t|\t%s\n" % ('-'*150,j,",".join(currentNode.name)))
 								dates = dates + temp
 								state = False
 							
