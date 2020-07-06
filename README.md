@@ -7,7 +7,7 @@ Utilizando python3 con la librería MatPlotLib, networkx y PyQT5 para la interfa
 ## Autores/Authors ✒️
 * **Luis Gerrardo Gutierrez** - *20161005902* - [MrZombie1](https://github.com/MrZombie1)
 * **Bryan Roberto Martinez** - *20171002266* - [KinImoX](https://github.com/KinImoX)
-* **Gabriel Alexander Barrientos** - *20181000058* - [VanhelsingX3](https://github.com/VanhelsingX3)
+* **Gabriel Alexander Barrientos** - *20181000058* - [galexbh](https://github.com/galexbh)
 
 ## Necesario/Necessary 📄
 
