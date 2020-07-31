@@ -4,6 +4,10 @@ UNAH (Universidad Autónoma de Honduras). Proyecto para la clase de algoritmos y
 
 Utilizando python3 con la librería MatPlotLib, networkx y PyQT5 para la interfaz gráfica.
 
+## Docente/Teacher 👨‍💻
+
+* **José Manuel Inestroza Murillo**
+
 ## Autores/Authors ✒️
 * **Luis Gerrardo Gutierrez** - *20161005902* - [MrZombie1](https://github.com/MrZombie1)
 * **Bryan Roberto Martinez** - *20171002266* - [KinImoX](https://github.com/KinImoX)
